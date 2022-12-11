@@ -44,7 +44,7 @@ jobs:
         run: |
           rm -rf /home/holly/actions-runner/_work
           sudo mkdir -p /mnt/_work
-          sudo chown -R holly:holly /mnt/_work
+          #sudo chown -R holly:holly /mnt/_work
           ln -sf /mnt/_work /home/holly/actions-runner/_work
           ls -la /home/holly/actions-runner
           ls -la /mnt
@@ -86,7 +86,7 @@ jobs:
       - name: Build RG353P/RG353V/RG353M
         run: |
           set -e
-          CUSTOM_VERSION="${{ steps.version.outputs.version }}" DOCKER_WORK_DIR="/work" DOCKER_EXTRA_OPTS="-v /buildroot:/buildroot" PYTHON_EGG_CACHE="${DOCKER_WORK_DIR}/.egg_cache" make docker-RG353P
+          CUSTOM_VERSION="${{ steps.version.outputs.version }}" DOCKER_WORK_DIR="/work" DOCKER_EXTRA_OPTS="--cpus=14 -v /buildroot:/buildroot" PYTHON_EGG_CACHE="${DOCKER_WORK_DIR}/.egg_cache" make docker-RG353P
       - name: Create release as draft at first to hide during uploads
         if: github.event.action == 'release-main'
         uses: ncipollo/release-action@v1
