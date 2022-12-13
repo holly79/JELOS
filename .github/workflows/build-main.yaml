@@ -22,7 +22,7 @@ jobs:
       - name: Create Symlink
         run: |
           sh -c "sudo rm -rf /home/holly/actions-runner/_work/distribution"
-          
+
           sh -c "sudo mkdir -p /mnt/_work/distribution"
 
           sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
@@ -177,8 +177,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: holly79
           repo: distribution
-      
-      - name: Cleanup
-        if: always()
-        run: |
-          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
