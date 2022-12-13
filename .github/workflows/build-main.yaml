@@ -52,8 +52,8 @@ jobs:
         run: |
           rm -rf /home/holly/actions-runner/_work
           sudo mkdir -p /mnt/_work
-          
-          sh -c "sudo chown -R $UID:$(id -g)/mnt/_work"
+
+          sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
 
           ln -sf /mnt/_work /home/holly/actions-runner/_work
           ls -la /home/holly/actions-runner
