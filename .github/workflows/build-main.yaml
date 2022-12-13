@@ -17,18 +17,17 @@ jobs:
     steps:
       - uses: hmarr/debug-action@v2
         name: debug
+      - uses: hmarr/debug-action@v2
+        name: debug
       - name: Create Symlink
         run: |
-          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
-          sh -c "sudo mkdir -p /mnt/_work"
+          sh -c "sudo rm -rf /home/holly/actions-runner/_work/distribution"
+          
+          sh -c "sudo mkdir -p /mnt/_work/distribution"
 
           sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
 
-          ln -sf /mnt/_work /home/holly/actions-runner/_work
-          ls -la /home/holly/actions-runner
-          ls -la /mnt
-      - uses: hmarr/debug-action@v2
-        name: debug
+          ln -sf /mnt/_work/distribution /home/holly/actions-runner/_work/distribution
       - name: Install docker
         run: |
           sudo apt-get update
@@ -73,12 +72,6 @@ jobs:
         with:
           clean: false
           ref: "${{ steps.branch.outputs.branch }}"
-      - name: ls
-        run: |
-          pwd
-          sudo ls -la .
-          sudo ls -la /home/holly/actions-runner
-          sudo ls -la /mnt
       - name: Get date for artifacts
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
