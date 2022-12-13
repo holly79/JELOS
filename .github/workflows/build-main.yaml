@@ -17,8 +17,6 @@ jobs:
     steps:
       - uses: hmarr/debug-action@v2
         name: debug
-      - uses: hmarr/debug-action@v2
-        name: debug
       - name: Create Symlink
         run: |
           sh -c "sudo rm -rf /home/holly/actions-runner/_work/distribution"
