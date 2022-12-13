@@ -82,7 +82,7 @@ jobs:
 
       - name: Build container
         run: |
-          docker build . --tag justenoughlinuxos/jelos-build:latest
+          sudo docker build . --tag justenoughlinuxos/jelos-build:latest
           
       - name: Build RG353P/RG353V/RG353M
         run: |
