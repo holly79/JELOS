@@ -48,140 +48,140 @@ jobs:
               lzop libncurses5-dev device-tree-compiler u-boot-tools rsync p7zip libparse-yapp-perl \
               zip binutils-aarch64-linux-gnu dos2unix p7zip-full libvpx-dev bsdmainutils bc meson p7zip-full \
               qemu-user-binfmt zstd parted imagemagick
-      # - name: Create Symlink
-      #   run: |
-      #     sh -c "sudo rm -rf /home/holly/actions-runner/_work"
-      #     sh -c "sudo mkdir -p /mnt/_work"
+      - name: Create Symlink
+        run: |
+          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
+          sh -c "sudo mkdir -p /mnt/_work"
 
-      #     sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
+          sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
 
-      #     ln -sf /mnt/_work /home/holly/actions-runner/_work
-      #     ls -la /home/holly/actions-runner
-      #     ls -la /mnt
-      # - name: get current branch as it may not be 'default branch;
-      #   id: branch
-      #   run: |
-      #       branch_arg="${{ github.event.client_payload.branch }}"
-      #       if [[ -z "$branch_arg" ]]; then
-      #         branch_arg="$GITHUB_REF_NAME"
-      #       fi
-      #       echo "::set-output name=branch::$branch_arg"
-      # - uses: actions/checkout@v2
-      #   name: checkout
-      #   with:
-      #     clean: false
-      #     ref: "${{ steps.branch.outputs.branch }}"
-      # - name: ls
-      #   run: |
-      #     pwd
-      #     sudo ls -la .
-      #     sudo ls -la /home/holly/actions-runner
-      #     sudo ls -la /mnt
-      # - name: Get date for artifacts
-      #   id: date
-      #   run: echo "::set-output name=date::$(date +'%Y%m%d')"
-      # - name: Get short SHA for artifacts
-      #   id: sha
-      #   run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
-      # - name: Get version
-      #   id: version
-      #   run: |
-      #      set -e
-      #      echo "full name: ${{ github.event.repository.full_name }}"
-      #      if [[ "${{ github.event.client_payload.release_tag }}" != "" ]]; then
-      #          echo "::set-output name=version::${{ github.event.client_payload.release_tag }}"
-      #      else
-      #          echo "::set-output name=version::${{ steps.date.outputs.date }}-${{ steps.sha.outputs.sha }}"
-      #      fi
-      # - name: Build RG353P/RG353V/RG353M
-      #   run: |
-      #     set -e
-      #     CUSTOM_VERSION="${{ steps.version.outputs.version }}" DOCKER_WORK_DIR="/work" DOCKER_EXTRA_OPTS="--cpus=30 --memory=100g  -v /buildroot:/buildroot" PYTHON_EGG_CACHE="${DOCKER_WORK_DIR}/.egg_cache" make docker-RG353P
-      # - name: Copy release
-      #   run: |
-      #     cp -r ./releas* /home/holly/
-      # - name: Create release as draft at first to hide during uploads
-      #   #if: github.event.action == 'release-main'
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     tag: "${{ steps.version.outputs.version }}"
-      #     body: |
-      #       &nbsp;&nbsp;<img src="https://raw.githubusercontent.com/JustEnoughLinuxOS/distribution/dev/distributions/JELOS/logos/jelos-logo.png" width=192>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Latest Version](https://img.shields.io/github/release/JustEnoughLinuxOS/distribution.svg?color=5998FF&label=latest%20version&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/releases/latest) [![Activity](https://img.shields.io/github/commit-activity/m/JustEnoughLinuxOS/distribution?color=5998FF&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/commits) [![Pull Requests](https://img.shields.io/github/issues-pr-closed/JustEnoughLinuxOS/distribution?color=5998FF&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/pulls) [![Discord Server](https://img.shields.io/discord/948029830325235753?color=5998FF&label=chat&style=flat-square)](https://discord.gg/seTxckZjJy)
-      #       #
-      #       Just Enough Linux Operating System (JELOS) is a community developed Linux distribution for handheld gaming devices.  Our goal is to produce an operating system that has the features and capabilities that we need, and to have fun as we develop it.
+          ln -sf /mnt/_work /home/holly/actions-runner/_work
+          ls -la /home/holly/actions-runner
+          ls -la /mnt
+      - name: get current branch as it may not be 'default branch;
+        id: branch
+        run: |
+            branch_arg="${{ github.event.client_payload.branch }}"
+            if [[ -z "$branch_arg" ]]; then
+              branch_arg="$GITHUB_REF_NAME"
+            fi
+            echo "::set-output name=branch::$branch_arg"
+      - uses: actions/checkout@v2
+        name: checkout
+        with:
+          clean: false
+          ref: "${{ steps.branch.outputs.branch }}"
+      - name: ls
+        run: |
+          pwd
+          sudo ls -la .
+          sudo ls -la /home/holly/actions-runner
+          sudo ls -la /mnt
+      - name: Get date for artifacts
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      - name: Get short SHA for artifacts
+        id: sha
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      - name: Get version
+        id: version
+        run: |
+           set -e
+           echo "full name: ${{ github.event.repository.full_name }}"
+           if [[ "${{ github.event.client_payload.release_tag }}" != "" ]]; then
+               echo "::set-output name=version::${{ github.event.client_payload.release_tag }}"
+           else
+               echo "::set-output name=version::${{ steps.date.outputs.date }}-${{ steps.sha.outputs.sha }}"
+           fi
+      - name: Build RG353P/RG353V/RG353M
+        run: |
+          set -e
+          CUSTOM_VERSION="${{ steps.version.outputs.version }}" DOCKER_WORK_DIR="/work" DOCKER_EXTRA_OPTS="--cpus=30 --memory=100g  -v /buildroot:/buildroot" PYTHON_EGG_CACHE="${DOCKER_WORK_DIR}/.egg_cache" make docker-RG353P
+      - name: Copy release
+        run: |
+          cp -r ./releas* /home/holly/
+      - name: Create release as draft at first to hide during uploads
+        #if: github.event.action == 'release-main'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "${{ steps.version.outputs.version }}"
+          body: |
+            &nbsp;&nbsp;<img src="https://raw.githubusercontent.com/JustEnoughLinuxOS/distribution/dev/distributions/JELOS/logos/jelos-logo.png" width=192>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Latest Version](https://img.shields.io/github/release/JustEnoughLinuxOS/distribution.svg?color=5998FF&label=latest%20version&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/releases/latest) [![Activity](https://img.shields.io/github/commit-activity/m/JustEnoughLinuxOS/distribution?color=5998FF&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/commits) [![Pull Requests](https://img.shields.io/github/issues-pr-closed/JustEnoughLinuxOS/distribution?color=5998FF&style=flat-square)](https://github.com/JustEnoughLinuxOS/distribution/pulls) [![Discord Server](https://img.shields.io/discord/948029830325235753?color=5998FF&label=chat&style=flat-square)](https://discord.gg/seTxckZjJy)
+            #
+            Just Enough Linux Operating System (JELOS) is a community developed Linux distribution for handheld gaming devices.  Our goal is to produce an operating system that has the features and capabilities that we need, and to have fun as we develop it.
 
-      #       ## Licenses
-      #       JELOS is a Linux distribution that is made up of many open-source components.  Components are provided under their respective licenses.  This distribution includes components licensed for non-commercial use only.
+            ## Licenses
+            JELOS is a Linux distribution that is made up of many open-source components.  Components are provided under their respective licenses.  This distribution includes components licensed for non-commercial use only.
 
-      #       ### JELOS Branding
-      #       JELOS branding and images are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+            ### JELOS Branding
+            JELOS branding and images are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-      #       #### You are free to
-      #       * Share — copy and redistribute the material in any medium or format
-      #       * Adapt — remix, transform, and build upon the material
+            #### You are free to
+            * Share — copy and redistribute the material in any medium or format
+            * Adapt — remix, transform, and build upon the material
 
-      #       #### Under the following terms
-      #       * Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-      #       * NonCommercial — You may not use the material for commercial purposes.
-      #       * ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+            #### Under the following terms
+            * Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+            * NonCommercial — You may not use the material for commercial purposes.
+            * ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 
-      #       ### JELOS Software
-      #       Copyright 2021-present Fewtarius
+            ### JELOS Software
+            Copyright 2021-present Fewtarius
 
-      #       Licensed under the Apache License, Version 2.0 (the "License");
-      #       you may not use this file except in compliance with the License.
-      #       You may obtain a copy of the License at
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file except in compliance with the License.
+            You may obtain a copy of the License at
 
-      #       http://www.apache.org/licenses/LICENSE-2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
-      #       Unless required by applicable law or agreed to in writing, software
-      #       distributed under the License is distributed on an "AS IS" BASIS,
-      #       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-      #       See the License for the specific language governing permissions and
-      #       limitations under the License.
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
 
-      #       ## Installation
-      #       * Download the latest version of JELOS.
-      #       * Decompress the image.
-      #       * Write the image to an SDCARD using an imaging tool.  Common imaging tools include [Balena Etcher](https://www.balena.io/etcher/), [Raspberry Pi Imager](https://www.raspberrypi.com/software/), and [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/).  If you're skilled with the command line, dd works fine too.
+            ## Installation
+            * Download the latest version of JELOS.
+            * Decompress the image.
+            * Write the image to an SDCARD using an imaging tool.  Common imaging tools include [Balena Etcher](https://www.balena.io/etcher/), [Raspberry Pi Imager](https://www.raspberrypi.com/software/), and [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/).  If you're skilled with the command line, dd works fine too.
 
-      #       Download: [[RG353P/RG353M/RG353V](https://github.com/holly79/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG353P.aarch64-${{ steps.version.outputs.version }}.img.gz)] [[RG503](https://github.com/JustEnoughLinuxOS/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG503.aarch64-${{ steps.version.outputs.version }}.img.gz)]
+            Download: [[RG353P/RG353M/RG353V](https://github.com/holly79/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG353P.aarch64-${{ steps.version.outputs.version }}.img.gz)] [[RG503](https://github.com/JustEnoughLinuxOS/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG503.aarch64-${{ steps.version.outputs.version }}.img.gz)]
 
-      #       > RG353V users, enable "DEVICE IS RG353V" in the system settings menu after flashing.
+            > RG353V users, enable "DEVICE IS RG353V" in the system settings menu after flashing.
 
-      #       ## Upgrading
-      #       * Download and install the update online via the System Settings menu.
-      #       ## Upgrading
-      #       * Download and install the update online via the System Settings menu.
-      #       * If you are unable to update online
-      #         * Download the latest version of JELOS from Github
-      #         * Copy the update to your device over the network to your device's update share.
-      #         * Reboot the device, and the update will begin automatically.
+            ## Upgrading
+            * Download and install the update online via the System Settings menu.
+            ## Upgrading
+            * Download and install the update online via the System Settings menu.
+            * If you are unable to update online
+              * Download the latest version of JELOS from Github
+              * Copy the update to your device over the network to your device's update share.
+              * Reboot the device, and the update will begin automatically.
 
-      #       Download: [[RG353P/RG353M/RG353V](https://github.com/holly79/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG353P.aarch64-${{ steps.version.outputs.version }}.tar)] [[RG503](https://github.com/JustEnoughLinuxOS/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG503.aarch64-${{ steps.version.outputs.version }}.tar)]
+            Download: [[RG353P/RG353M/RG353V](https://github.com/holly79/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG353P.aarch64-${{ steps.version.outputs.version }}.tar)] [[RG503](https://github.com/JustEnoughLinuxOS/distribution/releases/download/${{ steps.version.outputs.version }}/JELOS-RG503.aarch64-${{ steps.version.outputs.version }}.tar)]
 
-      #       ## Documentation
-      #       * [Home](https://github.com/JustEnoughLinuxOS/distribution/wiki)
-      #       * [Donating to JELOS](https://github.com/JustEnoughLinuxOS/distribution/wiki/Donating-to-JELOS)
-      #       * [Frequently asked Questions](https://github.com/JustEnoughLinuxOS/distribution/wiki/Frequently-Asked-Questions)
-      #       * [HotKeys](https://github.com/JustEnoughLinuxOS/distribution/wiki/Hotkeys)
-      #       * [Emulators and Game Engines](https://github.com/JustEnoughLinuxOS/distribution/wiki/JELOS-emulators-and-game-engines)
-      #       * [Moonlight Game Streaming](https://github.com/JustEnoughLinuxOS/distribution/wiki/Moonlight-Game-Streaming)
-      #       * [Using Cloud Drives](https://github.com/JustEnoughLinuxOS/distribution/wiki/Using-Cloud-Drives)
-      #       * [Wireguard VPN](https://github.com/JustEnoughLinuxOS/distribution/wiki/WireGuard-VPN)
+            ## Documentation
+            * [Home](https://github.com/JustEnoughLinuxOS/distribution/wiki)
+            * [Donating to JELOS](https://github.com/JustEnoughLinuxOS/distribution/wiki/Donating-to-JELOS)
+            * [Frequently asked Questions](https://github.com/JustEnoughLinuxOS/distribution/wiki/Frequently-Asked-Questions)
+            * [HotKeys](https://github.com/JustEnoughLinuxOS/distribution/wiki/Hotkeys)
+            * [Emulators and Game Engines](https://github.com/JustEnoughLinuxOS/distribution/wiki/JELOS-emulators-and-game-engines)
+            * [Moonlight Game Streaming](https://github.com/JustEnoughLinuxOS/distribution/wiki/Moonlight-Game-Streaming)
+            * [Using Cloud Drives](https://github.com/JustEnoughLinuxOS/distribution/wiki/Using-Cloud-Drives)
+            * [Wireguard VPN](https://github.com/JustEnoughLinuxOS/distribution/wiki/WireGuard-VPN)
 
-      #       ## Contributing
-      #       * [Developing and Building JELOS](https://github.com/JustEnoughLinuxOS/distribution/blob/dev/BUILDING.md)
+            ## Contributing
+            * [Developing and Building JELOS](https://github.com/JustEnoughLinuxOS/distribution/blob/dev/BUILDING.md)
 
-      #       ## Change Log
-      #       ${{ github.event.client_payload.release_notes }}
+            ## Change Log
+            ${{ github.event.client_payload.release_notes }}
 
-      #     artifacts: "release/*"
-      #     prerelease: false
-      #     draft: true
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     owner: holly79
-      #     repo: distribution
+          artifacts: "release/*"
+          prerelease: false
+          draft: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: holly79
+          repo: distribution
       
       - name: Cleanup
         if: always()
