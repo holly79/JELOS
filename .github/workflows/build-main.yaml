@@ -50,7 +50,7 @@ jobs:
               qemu-user-binfmt zstd parted imagemagick
       - name: Create Symlink
         run: |
-          rm -rf /home/holly/actions-runner/_work
+          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
           sh -c "sudo mkdir -p /mnt/_work"
 
           sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
