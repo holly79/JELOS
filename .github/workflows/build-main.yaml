@@ -15,6 +15,16 @@ jobs:
     timeout-minutes: 1440
     runs-on: self-hosted
     steps:
+     - name: Create Symlink
+        run: |
+          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
+          sh -c "sudo mkdir -p /mnt/_work"
+
+          sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
+
+          ln -sf /mnt/_work /home/holly/actions-runner/_work
+          ls -la /home/holly/actions-runner
+          ls -la /mnt
       - uses: hmarr/debug-action@v2
         name: debug
       - name: Install docker
@@ -48,16 +58,6 @@ jobs:
               lzop libncurses5-dev device-tree-compiler u-boot-tools rsync p7zip libparse-yapp-perl \
               zip binutils-aarch64-linux-gnu dos2unix p7zip-full libvpx-dev bsdmainutils bc meson p7zip-full \
               qemu-user-binfmt zstd parted imagemagick
-      - name: Create Symlink
-        run: |
-          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
-          sh -c "sudo mkdir -p /mnt/_work"
-
-          sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
-
-          ln -sf /mnt/_work /home/holly/actions-runner/_work
-          ls -la /home/holly/actions-runner
-          ls -la /mnt
       - name: get current branch as it may not be 'default branch;
         id: branch
         run: |
