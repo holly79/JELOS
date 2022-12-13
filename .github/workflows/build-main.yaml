@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 1440
     runs-on: self-hosted
     steps:
-     - name: Create Symlink
+      - name: Create Symlink
         run: |
           sh -c "sudo rm -rf /home/holly/actions-runner/_work"
           sh -c "sudo mkdir -p /mnt/_work"
