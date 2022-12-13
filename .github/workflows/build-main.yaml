@@ -51,7 +51,7 @@ jobs:
       - name: Create Symlink
         run: |
           rm -rf /home/holly/actions-runner/_work
-          sudo mkdir -p /mnt/_work
+          sh -c "sudo mkdir -p /mnt/_work"
 
           sh -c "sudo chown -R $UID:$(id -g) /mnt/_work"
 
