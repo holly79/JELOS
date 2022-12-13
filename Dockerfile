@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt update  \
+    && DEBIAN_FRONTEND=noninteractive apt upgrade -y \
     && DEBIAN_FRONTEND=noninteractive \
       apt install -y \
       gcc make git unzip wget \
