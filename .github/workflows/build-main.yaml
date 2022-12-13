@@ -182,3 +182,8 @@ jobs:
       #     token: ${{ secrets.GITHUB_TOKEN }}
       #     owner: holly79
       #     repo: distribution
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          sh -c "sudo rm -rf /home/holly/actions-runner/_work"
